@@ -15,13 +15,15 @@ let frames = {
 	idle: [1, 2, 3, 4, 5, 6, 7, 8],
 	kick: [1, 2, 3, 4, 5, 6, 7],
 	punch: [1, 2, 3, 4, 5, 6, 7],
+	forward: [1, 2, 3, 4, 5, 6],
+	backward: [1, 2, 3, 4, 5, 6],
 };
 
 let loadImages = (callback) => {
-	let images = { idle: [], kick: [], punch: [] };
+	let images = { idle: [], kick: [], punch: [], forward: [], backward: [] };
 	let imagesToLoad = 0;
 
-	["idle", "kick", "punch"].forEach((animation) => {
+	["idle", "kick", "punch", "forward", "backward"].forEach((animation) => {
 
 		let animationFrames = frames[animation];
 		imagesToLoad = imagesToLoad + animationFrames.length;
@@ -49,7 +51,7 @@ let animate = (ctx, images, animation, callback) => {
 			ctx.drawImage(image, 0, 0, 500, 500);
 		}, index * 100);
 	});
-	
+
 	setTimeout(callback, images[animation].length * 100);
 };
 
@@ -76,13 +78,25 @@ loadImages((images) => {
 		queuedAnimations.push("punch");
 	};
 
-	document.addEventListener("keyup", (event) => {
+	document.getElementById("forward").onclick = () => {
+		queueAnimation.push("forward");
+	};
+
+	document.getElementById("backward").onclick = () => {
+		queueAnimation.push("backward");
+	};
+
+	document.addEventListener("keydown", (event) => {
 		const key = event.key;
 
 		if (key === "ArrowLeft") {
 			queuedAnimations.push("kick");
 		} else if (key === "ArrowRight") {
 			queuedAnimations.push("punch");
+		} else if (key === "d") {
+			queuedAnimations.push("forward");
+		} else if (key === "a") {
+			queuedAnimations.push("backward");
 		}
 	});
 });
